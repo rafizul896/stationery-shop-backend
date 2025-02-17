@@ -1,3 +1,13 @@
+import { Types } from 'mongoose';
+
+export interface IReview {
+  id?: string;
+  user: Types.ObjectId;
+  rating: number;
+  comment?: string;
+  createdAt: Date;
+}
+
 export interface IProduct {
   name: string;
   brand: string;
@@ -11,6 +21,8 @@ export interface IProduct {
   description: string;
   quantity: number;
   inStock: boolean;
+  imageUrl: string;
+  reviews: IReview[];
 }
 
 export interface IGetProductsQuery {
