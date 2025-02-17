@@ -4,10 +4,10 @@ import Product from '../products/products.model';
 
 const orderSchema = new Schema<IOrder>(
   {
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      match: [/\S+@\S+\.\S+/, 'Please provide a valid email'],
+    user: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: [true, 'User is required'],
     },
     product: {
       type: Types.ObjectId,
@@ -37,6 +37,12 @@ const orderSchema = new Schema<IOrder>(
       required: [true, 'Total price is required'],
       min: [0, 'Total price must be a positive number'],
     },
+    status: {
+      type: String,
+      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+      default: "Pending",
+    },
+    paymentStatus: { type: String, enum: ["Paid", "Unpaid"], default: "Unpaid" },
   },
   {
     timestamps: true,

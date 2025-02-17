@@ -1,13 +1,13 @@
 import { orderService } from './order.service';
 import catchAsync from '../../utils/catchAsynce';
-import sendResponce from '../../utils/sendResponce';
+import sendResponse from '../../utils/sendResponce';
 
 // Order a Stationery Product
 const createOrder = catchAsync(async (req, res) => {
   const order = req.body;
   const result = await orderService.createOrder(order);
 
-  sendResponce(res, {
+  sendResponse(res, {
     success: true,
     message: 'Order created successfully',
     statusCode: 201,
@@ -19,7 +19,7 @@ const createOrder = catchAsync(async (req, res) => {
 const calculateRevenue = catchAsync(async (req, res) => {
   const result = await orderService.calculateRevenue();
 
-  sendResponce(res, {
+  sendResponse(res, {
     success: true,
     message: 'Revenue calculated successfully',
     statusCode: 200,

@@ -29,6 +29,15 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    shippingAddress: {
+      fullName: { type: String },
+      address: { type: String },
+      city: { type: String },
+      postalCode: { type: String },
+      country: { type: String },
+      contactNumber: { type: Number },
+    },
+    isUpdateShippingAddress: { type: Boolean, default: false },
   },
   {
     timestamps: true,

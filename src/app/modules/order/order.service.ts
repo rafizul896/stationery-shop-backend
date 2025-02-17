@@ -3,7 +3,7 @@ import IOrder from './order.interface';
 import Order from './order.model';
 
 const createOrder = async (payload: IOrder): Promise<IOrder> => {
-  const { email, product, quantity, totalPrice } = payload;
+  const { user, product, quantity, totalPrice } = payload;
 
   // Check if the product exists
   const existsProduct = await Product.findById(product);
@@ -23,7 +23,7 @@ const createOrder = async (payload: IOrder): Promise<IOrder> => {
   await existsProduct.save();
 
   // Create the order
-  const result = await Order.create({ email, product, quantity, totalPrice });
+  const result = await Order.create({ user, product, quantity, totalPrice });
   return result;
 };
 
@@ -49,6 +49,7 @@ const calculateRevenue = async () => {
 
   return result.length > 0 ? result[0] : { totalRevenue: 0 };
 };
+
 
 export const orderService = {
   createOrder,
