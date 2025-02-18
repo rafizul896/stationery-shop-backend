@@ -17,4 +17,6 @@ router.post(
   AuthControllers.login,
 );
 
+router.patch('/:id/update', AuthControllers.updateProfile);
+
 export const authRoutes = router;

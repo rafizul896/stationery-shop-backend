@@ -1,6 +1,6 @@
 import AppError from '../../errors/AppError';
 import { IUser } from '../user/user.interface';
-import { User } from '../user/user.mode';
+import { User } from '../user/user.model';
 import httpStatus from 'http-status-codes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -42,7 +42,29 @@ const login = async (payload: IUser) => {
   return { token: token };
 };
 
+const updateProfile = async (id: string, payload: IUser) => {
+  const { shippingAddress, ...remainingData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingData,
+  };
+
+  if (shippingAddress && Object.keys(shippingAddress).length) {
+    for (const [key, value] of Object.entries(shippingAddress)) {
+      modifiedUpdatedData[`shippingAddress.${key}`] = value;
+    }
+  }
+
+  const result = await User.findByIdAndUpdate(id, modifiedUpdatedData, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
 export const AuthServices = {
   register,
   login,
+  updateProfile,
 };

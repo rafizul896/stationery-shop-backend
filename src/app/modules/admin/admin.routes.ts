@@ -5,7 +5,6 @@ import auth from '../../middlewares/auth';
 const router = Router();
 
 router.patch('/users/:userId/block', auth('admin'), AdminControllers.blockUser);
-
-router.delete('/blogs/:id', auth('admin'), AdminControllers.deleteBlog);
+router.get('/users', AdminControllers.getAllUsers);
 
 export const adminRoutes = router;

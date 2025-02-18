@@ -6,17 +6,18 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import productRouter from './app/modules/products/products.route';
 import orderRouter from './app/modules/order/order.route';
+import { adminRoutes } from './app/modules/admin/admin.routes';
 
 const app: Application = express();
 
 // parsers
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
 // routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/products', productRouter); // for products
 app.use('/api/orders', orderRouter); // for orders
 

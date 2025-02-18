@@ -1,7 +1,5 @@
-import AppError from '../../errors/AppError';
-import { Blog } from '../blog/blog.model';
-import { User } from '../user/user.mode';
-import httpStatus from 'http-status-codes';
+import QueryBuilder from '../../utils/QueryBuilder';
+import { User } from '../user/user.model';
 
 const blockUserIntoDB = async (id: string) => {
   const result = await User.findByIdAndUpdate(
@@ -15,18 +13,24 @@ const blockUserIntoDB = async (id: string) => {
   return result;
 };
 
-const deleteBlogFromDB = async (id: string) => {
-  const blog = await Blog.findById(id);
+const getAllUsers = async (query: Record<string, unknown>) => {
+  const userQuery = new QueryBuilder(User.find(), query)
+    .search(['name'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
 
-  if (!blog) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Blog is not Found!');
-  }
+  const result = await userQuery.modelQuery;
+  const meta = await userQuery.countTotal();
 
-  const result = await Blog.findByIdAndDelete(id);
-  return result;
+  return {
+    meta,
+    result,
+  };
 };
 
 export const AdminServices = {
   blockUserIntoDB,
-  deleteBlogFromDB,
+  getAllUsers,
 };

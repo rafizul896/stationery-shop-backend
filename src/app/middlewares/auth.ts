@@ -4,7 +4,7 @@ import { IRole } from '../modules/user/user.interface';
 import catchAsync from '../utils/catchAsynce';
 import httpStatus from 'http-status-codes';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { User } from '../modules/user/user.mode';
+import { User } from '../modules/user/user.model';
 
 const auth = (...requiredRoles: IRole[]) => {
   return catchAsync(async (req, res, next) => {
