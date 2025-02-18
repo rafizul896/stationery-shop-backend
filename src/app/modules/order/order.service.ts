@@ -51,7 +51,9 @@ const calculateRevenue = async () => {
 };
 
 
-export const orderService = {
+
+
+export const OrderService = {
   createOrder,
   calculateRevenue,
 };

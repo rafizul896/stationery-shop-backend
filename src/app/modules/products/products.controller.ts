@@ -56,6 +56,21 @@ const updateAProduct = catchAsync(async (req, res) => {
   });
 });
 
+// add or update a review
+const reviewAProduct = catchAsync(async (req, res) => {
+  const productId = req.params.productId;
+  const data = req.body;
+
+  const result = await ProductService.reviewAProduct(productId, data);
+
+  sendResponse(res, {
+    success: true,
+    message: 'Review updated successfully',
+    statusCode: 200,
+    data: result,
+  });
+});
+
 // Delete a Stationery Product
 const deleteAProduct = catchAsync(async (req, res) => {
   const productId = req.params.productId;
@@ -69,10 +84,11 @@ const deleteAProduct = catchAsync(async (req, res) => {
   });
 });
 
-export const productController = {
+export const ProductController = {
   createAProduct,
   getAllProducts,
   getAProduct,
   updateAProduct,
   deleteAProduct,
+  reviewAProduct
 };
