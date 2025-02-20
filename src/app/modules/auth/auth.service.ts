@@ -3,7 +3,7 @@ import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 import httpStatus from 'http-status-codes';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../../config';
 
 const register = async (payload: IUser) => {
@@ -35,11 +35,19 @@ const login = async (payload: IUser) => {
     role: user.role,
   };
 
-  const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
-    expiresIn: '60d',
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '7d',
   });
 
-  return { token: token };
+  const refreshToken = jwt.sign(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    {
+      expiresIn: '365d',
+    },
+  );
+
+  return { accessToken, refreshToken };
 };
 
 const updateProfile = async (id: string, payload: IUser) => {
@@ -63,8 +71,46 @@ const updateProfile = async (id: string, payload: IUser) => {
   return result;
 };
 
+const refreshToken = async (token: string) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const user = await User.findOne({ email: decoded.email });
+
+  // checking if the user is exists
+  if (!user) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid credentials');
+  }
+
+  // checking if the user is blocked
+  if (user.isBlocked) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Deleted!');
+  }
+
+  // create token
+  const jwtPayload = {
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = jwt.sign(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    {
+      expiresIn: '365d',
+    },
+  );
+
+  return {
+    accessToken,
+  };
+};
+
 export const AuthServices = {
   register,
   login,
   updateProfile,
+  refreshToken,
 };

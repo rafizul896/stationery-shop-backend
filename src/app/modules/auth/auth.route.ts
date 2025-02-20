@@ -17,6 +17,12 @@ router.post(
   AuthControllers.login,
 );
 
+router.post(
+  '/refresh-token',
+  validateRequest(AuthValidations.refreshTokenValidationSchema),
+  AuthControllers.refreshToken,
+);
+
 router.patch('/:id/update', AuthControllers.updateProfile);
 
 export const authRoutes = router;

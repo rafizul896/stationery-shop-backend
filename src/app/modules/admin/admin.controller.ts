@@ -18,7 +18,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
   sendResponce(res, {
     success: true,
-    message: 'User blocked successfully',
+    message: 'User retrieved successfully',
     statusCode: 200,
     data: result.result,
     meta: result.meta,

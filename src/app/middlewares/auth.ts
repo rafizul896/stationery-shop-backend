@@ -15,10 +15,16 @@ const auth = (...requiredRoles: IRole[]) => {
     }
 
     // check token isValid
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string,
-    ) as JwtPayload;
+    let decoded;
+
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
+    } catch (err) {
+      throw new AppError(httpStatus.UNAUTHORIZED,'Unauthorized');
+    }
 
     const { email, role } = decoded;
 
