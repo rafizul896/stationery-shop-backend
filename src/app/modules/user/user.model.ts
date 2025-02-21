@@ -18,7 +18,7 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: [true,'This email is already taken'],
     },
     role: {
       type: String,

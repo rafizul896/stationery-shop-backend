@@ -11,4 +11,6 @@ productRouter.put('/:productId', ProductController.updateAProduct);
 productRouter.put('/:productId/review', ProductController.reviewAProduct);
 productRouter.delete('/:productId', ProductController.deleteAProduct);
 
+productRouter.get('/getAll/reviews', ProductController.productReviews);
+
 export default productRouter;

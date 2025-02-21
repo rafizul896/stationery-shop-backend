@@ -23,7 +23,7 @@ const auth = (...requiredRoles: IRole[]) => {
         config.jwt_access_secret as string,
       ) as JwtPayload;
     } catch (err) {
-      throw new AppError(httpStatus.UNAUTHORIZED,'Unauthorized');
+      throw new AppError(444,'Unauthorized');
     }
 
     const { email, role } = decoded;

@@ -84,11 +84,24 @@ const deleteAProduct = catchAsync(async (req, res) => {
   });
 });
 
+// Stationery Product reviews
+const productReviews = catchAsync(async (req, res) => {
+  const result = await ProductService.productReviews();
+
+  sendResponse(res, {
+    success: true,
+    message: 'Product reviews retrieved successfully',
+    statusCode: 201,
+    data: result,
+  });
+});
+
 export const ProductController = {
   createAProduct,
   getAllProducts,
   getAProduct,
   updateAProduct,
   deleteAProduct,
-  reviewAProduct
+  reviewAProduct,
+  productReviews
 };

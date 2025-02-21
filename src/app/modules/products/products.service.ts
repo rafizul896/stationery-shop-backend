@@ -69,6 +69,36 @@ const deleteAProduct = async (productId: string) => {
   return result;
 };
 
+const productReviews = async () => {
+  const result = await Product.aggregate([
+    {
+      $unwind: '$reviews',
+    },
+    {
+      $lookup: {
+        from: 'users', // Assuming your users collection is named 'users'
+        localField: 'reviews.user',
+        foreignField: '_id',
+        as: 'reviewer',
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        productId: '$_id',
+        productName: '$name',
+        category: '$category',
+        brand: '$brand',
+        reviewer: { $arrayElemAt: ['$reviewer.name', 0] }, // Extract user name
+        rating: '$reviews.rating',
+        comment: '$reviews.comment',
+      },
+    },
+  ]);
+
+  return result;
+};
+
 export const ProductService = {
   createAProduct,
   getAllProducts,
@@ -76,4 +106,5 @@ export const ProductService = {
   updateAProduct,
   deleteAProduct,
   reviewAProduct,
+  productReviews,
 };
