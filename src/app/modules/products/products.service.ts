@@ -94,7 +94,15 @@ const productReviews = async () => {
         comment: '$reviews.comment',
       },
     },
-  ]);
+  ]).limit(10);
+
+  return result;
+};
+
+const findAllBrands = async (categories:string) => {
+  const result = await Product.distinct('brand', {
+    category: { $in: categories.split(',') },
+  });
 
   return result;
 };
@@ -107,4 +115,5 @@ export const ProductService = {
   deleteAProduct,
   reviewAProduct,
   productReviews,
+  findAllBrands,
 };

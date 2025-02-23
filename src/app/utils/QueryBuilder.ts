@@ -28,6 +28,31 @@ class QueryBuilder<T> {
   filter() {
     const queryObj = { ...this.query }; // copy
 
+    if (queryObj.brand) {
+      queryObj.brand = { $in: (queryObj.brand as string).split(',') };
+    }
+
+    if (queryObj.category) {
+      queryObj.category = { $in: (queryObj.category as string).split(',') };
+    }
+
+    // ✅ Price Range Filtering
+    if (queryObj.minPrice || queryObj.maxPrice) {
+      queryObj.price = {};
+
+      if (queryObj.minPrice) {
+        (queryObj.price as { $gte?: number }).$gte = Number(queryObj.minPrice);
+      }
+
+      if (queryObj.maxPrice) {
+        (queryObj.price as { $lte?: number }).$lte = Number(queryObj.maxPrice);
+      }
+
+      // Remove minPrice and maxPrice after assigning them to price
+      delete queryObj.minPrice;
+      delete queryObj.maxPrice;
+    }
+
     // Filtering
     const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
 

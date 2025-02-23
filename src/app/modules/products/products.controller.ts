@@ -96,6 +96,19 @@ const productReviews = catchAsync(async (req, res) => {
   });
 });
 
+// Stationery Product reviews
+const findAllBrands = catchAsync(async (req, res) => {
+  const {category} = req.query;
+  const result = await ProductService.findAllBrands(category as string);
+
+  sendResponse(res, {
+    success: true,
+    message: 'Brands are retrieved successfully',
+    statusCode: 201,
+    data: result,
+  });
+});
+
 export const ProductController = {
   createAProduct,
   getAllProducts,
@@ -103,5 +116,6 @@ export const ProductController = {
   updateAProduct,
   deleteAProduct,
   reviewAProduct,
-  productReviews
+  productReviews,
+  findAllBrands,
 };
