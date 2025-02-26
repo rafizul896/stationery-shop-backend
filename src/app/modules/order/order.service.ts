@@ -1,6 +1,7 @@
 import AppError from '../../errors/AppError';
 import QueryBuilder from '../../utils/QueryBuilder';
 import Product from '../products/products.model';
+import { User } from '../user/user.model';
 import { orderSearchableFields } from './order.constant';
 import IOrder from './order.interface';
 import Order from './order.model';
@@ -11,6 +12,9 @@ const createOrder = async (payload: IOrder): Promise<IOrder> => {
   // Check if the product exists
   const existsProduct = await Product.findById(product);
   if (!existsProduct) throw new Error('Product not found');
+
+  const existsUser = await User.findById(user);
+  if (!existsUser) throw new Error('User not found');
 
   // Check inventory availability
   if (!existsProduct.inStock || existsProduct.quantity < quantity) {
@@ -42,11 +46,11 @@ const getAllOrder = async (query: Record<string, unknown>) => {
     .fields();
 
   const meta = await ordersQuery.countTotal();
-  const result = await ordersQuery.modelQuery;
+  const data = await ordersQuery.modelQuery;
 
   return {
     meta,
-    result,
+    data,
   };
 };
 
@@ -83,7 +87,7 @@ const deleteAOrder = async (orderId: string) => {
 
   if (result) {
     existsProduct.quantity += order.quantity;
-    existsProduct.inStock = false;
+    existsProduct.inStock = true;
   }
 
   await existsProduct.save();

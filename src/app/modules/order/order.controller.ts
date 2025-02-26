@@ -22,7 +22,8 @@ const getAllOrder = catchAsync(async (req, res) => {
     success: true,
     message: 'Order retrieved successfully',
     statusCode: 200,
-    data: result,
+    data: result.data,
+    meta: result.meta
   });
 });
 

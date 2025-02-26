@@ -12,7 +12,7 @@ export interface IUser {
   email: string;
   password: string;
   role: IRole;
-  isBlocked: boolean;
+  status: 'active' | 'block';
   shippingAddress: TShippingAddress;
   isUpdateShippingAddress: boolean;
 }

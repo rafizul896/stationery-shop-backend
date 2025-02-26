@@ -22,8 +22,9 @@ const auth = (...requiredRoles: IRole[]) => {
         token,
         config.jwt_access_secret as string,
       ) as JwtPayload;
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     } catch (err) {
-      throw new AppError(444,'Unauthorized');
+      throw new AppError(444, 'Unauthorized');
     }
 
     const { email, role } = decoded;
@@ -36,7 +37,7 @@ const auth = (...requiredRoles: IRole[]) => {
     }
 
     // checking if the user is blocked
-    if (user.isBlocked) {
+    if (user.status === 'block') {
       throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Blocked!');
     }
 

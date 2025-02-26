@@ -28,7 +28,7 @@ const getAllProducts = async (query: Record<string, unknown>) => {
 };
 
 const getAProduct = async (productId: string) => {
-  const result = await Product.findById(productId);
+  const result = await Product.findById(productId).populate('reviews.user');
   return result;
 };
 

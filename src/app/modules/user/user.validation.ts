@@ -7,7 +7,7 @@ const userValidationSchema = z.object({
       .string(),
     email: z.string().email({ message: 'Invalid email format' }),
     role: z.enum(['admin', 'user']).default('user'),
-    isBlocked: z.boolean().default(false),
+    isBlocked: z.enum(['active', 'block']).default('active'),
   }),
 });
 

@@ -25,9 +25,10 @@ const userSchema = new Schema<IUser>(
       enum: ['admin', 'user'],
       default: 'user',
     },
-    isBlocked: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ['active', 'block'],
+      default: 'active',
     },
     shippingAddress: {
       fullName: { type: String, default: '' },

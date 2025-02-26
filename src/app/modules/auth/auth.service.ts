@@ -20,8 +20,8 @@ const login = async (payload: IUser) => {
   }
 
   // checking if the user is blocked
-  if (user.isBlocked) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Deleted!');
+  if (user.status === 'block') {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Blocked!');
   }
 
   // check password
@@ -85,8 +85,8 @@ const refreshToken = async (token: string) => {
   }
 
   // checking if the user is blocked
-  if (user.isBlocked) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Deleted!');
+  if (user.status === 'block') {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This user is Blocked!');
   }
 
   // create token
@@ -95,13 +95,9 @@ const refreshToken = async (token: string) => {
     role: user.role,
   };
 
-  const accessToken = jwt.sign(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    {
-      expiresIn: '365d',
-    },
-  );
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '365d',
+  });
 
   return {
     accessToken,
