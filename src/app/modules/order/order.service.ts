@@ -1,42 +1,46 @@
-import AppError from '../../errors/AppError';
 import QueryBuilder from '../../utils/QueryBuilder';
 import Product from '../products/products.model';
 import { User } from '../user/user.model';
 import { orderSearchableFields } from './order.constant';
-import IOrder from './order.interface';
+import { IOrder } from './order.interface';
 import Order from './order.model';
 
 const createOrder = async (payload: IOrder): Promise<IOrder> => {
-  const { user, product, quantity, totalPrice } = payload;
+  const { user, products } = payload;
 
-  // Check if the product exists
-  const existsProduct = await Product.findById(product);
-  if (!existsProduct) throw new Error('Product not found');
-
+  // Check if the user exists
   const existsUser = await User.findById(user);
-  if (!existsUser) throw new Error('User not found');
-
-  // Check inventory availability
-  if (!existsProduct.inStock || existsProduct.quantity < quantity) {
-    throw new Error('Insufficient stock for the requested quantity');
+  if (!existsUser) {
+    throw new Error('User not found');
   }
 
-  // Update inventory
-  existsProduct.quantity -= quantity;
-  if (existsProduct.quantity === 0) {
-    existsProduct.inStock = false;
-  }
+  for (const item of products) {
+    const existsProduct = await Product.findById(item.product);
 
-  await existsProduct.save();
+    if (!existsProduct) throw new Error('Product not found');
+
+    // Check inventory availability
+    if (!existsProduct.inStock || existsProduct.quantity < item.quantity) {
+      throw new Error('Insufficient stock for the requested quantity');
+    }
+
+    // Update inventory
+    existsProduct.quantity -= item.quantity;
+    if (existsProduct.quantity === 0) {
+      existsProduct.inStock = false;
+    }
+
+    await existsProduct.save();
+  }
 
   // Create the order
-  const result = await Order.create({ user, product, quantity, totalPrice });
+  const result = await Order.create(payload);
   return result;
 };
 
 const getAllOrder = async (query: Record<string, unknown>) => {
   const ordersQuery = new QueryBuilder(
-    Order.find().populate('user product'),
+    Order.find().populate('user products.product'),
     query,
   )
     .search(orderSearchableFields)
@@ -55,7 +59,7 @@ const getAllOrder = async (query: Record<string, unknown>) => {
 };
 
 const getAOrder = async (orderId: string) => {
-  const result = await Order.findById(orderId).populate('user product');
+  const result = await Order.findById(orderId).populate('user');
   return result;
 };
 
@@ -64,36 +68,6 @@ const updateAOrder = async (orderId: string, payload: Partial<IOrder>) => {
   return result;
 };
 
-const deleteAOrder = async (orderId: string) => {
-  const order = await Order.findById(orderId).populate('user product');
-
-  if (!order) {
-    throw new AppError(404, 'Order is not found!');
-  }
-
-  if (order?.paymentStatus === 'Paid' && order?.status === 'Shipped') {
-    throw new AppError(405, 'Action not permited!');
-  }
-
-  const existsProduct = await Product.findById(order.product).select(
-    'quantity inStock',
-  );
-
-  const result = await Order.findByIdAndDelete(orderId);
-
-  if (!existsProduct) {
-    throw new AppError(404, 'Product Not found!');
-  }
-
-  if (result) {
-    existsProduct.quantity += order.quantity;
-    existsProduct.inStock = true;
-  }
-
-  await existsProduct.save();
-
-  return result;
-};
 
 const calculateRevenue = async () => {
   const result = await Order.aggregate([
@@ -118,11 +92,12 @@ const calculateRevenue = async () => {
   return result.length > 0 ? result[0] : { totalRevenue: 0 };
 };
 
+
+
 export const OrderService = {
   createOrder,
   calculateRevenue,
   getAllOrder,
   getAOrder,
   updateAOrder,
-  deleteAOrder,
 };

@@ -23,7 +23,7 @@ const getAllOrder = catchAsync(async (req, res) => {
     message: 'Order retrieved successfully',
     statusCode: 200,
     data: result.data,
-    meta: result.meta
+    meta: result.meta,
   });
 });
 
@@ -50,17 +50,6 @@ const updateAOrder = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const deleteAOrder = catchAsync(async (req, res) => {
-  const orderId = req.params.orderId;
-  const result = await OrderService.deleteAOrder(orderId);
-
-  sendResponse(res, {
-    success: true,
-    message: 'Order deleted successfully',
-    statusCode: 200,
-    data: result,
-  });
-});
 
 // Calculate Revenue from Orders (Aggregation)
 const calculateRevenue = catchAsync(async (req, res) => {
@@ -80,5 +69,4 @@ export const orderController = {
   getAllOrder,
   getAOrder,
   updateAOrder,
-  deleteAOrder,
 };
