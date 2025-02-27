@@ -9,17 +9,24 @@ import orderRouter from './app/modules/order/order.route';
 import { adminRoutes } from './app/modules/admin/admin.routes';
 import userRouter from './app/modules/user/user.route';
 import Stripe from 'stripe';
+import config from './app/config';
 
-const stripe = new Stripe(
-  'sk_test_51PL3ZCAjUyxa0ThHa3bKovEGL87Jo6cYiCCnMKDpk1FfFMlaOQ0TIldmR8tZRBQ60KtBbkHCuYWUsKIXP01KVOm300GcWFh2D2',
-);
+const stripe = new Stripe(config.STRIPE_SECRET as string);
 
 const app: Application = express();
 
 // parsers
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://stationery-shop-frontend-rho.vercel.app',
+    ],
+    credentials: true,
+  }),
+);
 
 // routes
 app.use('/api/auth', authRoutes);
