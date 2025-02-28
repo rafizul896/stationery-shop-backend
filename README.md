@@ -213,11 +213,5 @@ http://localhost:5000/api
 
 ---
 
-## License
-
-This project is licensed under the **MIT License**.
-
----
-
 **Developed with ❤️ using Express, TypeScript & MongoDB.**
 
