@@ -169,7 +169,12 @@ http://localhost:5000/api
 { 
     "success": true,
     "message": Responce is successfully,
-    "meta": [],
+    "meta": {
+        "page": number,
+        "limit": number,
+        "total": number,
+      "totalPage": number
+      },
     "data": [],
 };
 ```
