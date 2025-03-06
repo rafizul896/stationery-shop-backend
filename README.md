@@ -218,5 +218,5 @@ http://localhost:5000/api
 
 ---
 
-**Developed with ❤️ using Express, TypeScript & MongoDB.**
+**Developed with using Express, TypeScript & MongoDB.**
 
