@@ -210,13 +210,5 @@ http://localhost:5000/api
 
 ---
 
-## Future Enhancements
-
-- Implement product reviews and ratings.
-- Add real-time inventory tracking.
-- Enhance dashboard analytics with detailed sales reports.
-
----
-
 **Developed with using Express, TypeScript & MongoDB.**
 
