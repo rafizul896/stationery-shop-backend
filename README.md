@@ -168,7 +168,7 @@ http://localhost:5000/api
 ```javascript
 { 
     "success": true,
-    "message": Responce is successfully,
+    "message": "Responce is successfully",
     "meta": {
         "page": number,
         "limit": number,
