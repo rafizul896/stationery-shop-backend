@@ -97,6 +97,9 @@ Stationery_Shop/
 
 ```bash
 git clone https://github.com/rafizul896/stationery-shop-server.git
+```
+
+```bash
 cd stationery-shop-server
 ```
 
