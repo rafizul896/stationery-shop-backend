@@ -62,7 +62,7 @@ const productSchema = new Schema<IProduct>(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        delete ret.id; // Remove `id` from main object
+        delete ret.id;
         if (ret.reviews) {
           ret.reviews.forEach((review: IReview) => delete review.id); // Remove `id` from reviews
         }
