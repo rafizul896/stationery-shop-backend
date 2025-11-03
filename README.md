@@ -1,7 +1,5 @@
 # Stationery Shop Backend
 
-## Overview
-
 The **Stationery Shop Backend** is a robust backend solution developed using **Express.js** and **TypeScript**, designed to manage stationery products and customer orders efficiently. It leverages **MongoDB** with **Mongoose** for seamless data handling, ensuring efficient inventory management, order processing, and revenue calculation. 
 
 ## Features
