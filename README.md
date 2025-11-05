@@ -35,9 +35,9 @@ The **Stationery Shop Backend** is a robust backend solution developed using **E
 
 ---
 
-## Frontend Repository
+## Frontend
 
-Backend Repo Link: https://github.com/rafizul896/stationery-shop-frontend
+Frontend Repo Link: https://github.com/rafizul896/stationery-shop-frontend
 
 Frontend Live Link: https://stationery-shop-frontend-rho.vercel.app/
 
